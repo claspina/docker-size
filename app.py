@@ -27,3 +27,8 @@ def check():
 @app.route("/")
 def index():
     return app.send_static_file("index.html")
+
+if __name__ == "__main__":
+    import os
+    port = int(os.environ.get("PORT", 10000))  # Render expone este puerto
+    app.run(host="0.0.0.0", port=port)
