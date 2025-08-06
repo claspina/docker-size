@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Docker Image Size Checker</title>
+</head>
+<body>
+  <h1>Docker Image Size Checker</h1>
+  <input type="text" id="imageInput" placeholder="docker.io/user/image:tag" />
+  <button onclick="checkSize()">Check</button>
+  <pre id="result"></pre>
+
+  <script>
+    async function checkSize() {
+      const image = document.getElementById('imageInput').value;
+      const resBox = document.getElementById('result');
+      resBox.textContent = "Checking...";
+      try {
+        const response = await fetch(`/check?image=${encodeURIComponent(image)}`);
+        const data = await response.json();
+        if (data.error) {
+          resBox.textContent = "Error: " + data.error;
+        } else {
+          resBox.textContent = `Size: ${data.size_mb} MB (${data.size_gb} GB)`;
+        }
+      } catch (e) {
+        resBox.textContent = "Something went wrong.";
+      }
+    }
+  </script>
+</body>
+</html>
